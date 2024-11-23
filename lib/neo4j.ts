@@ -1,4 +1,5 @@
-import neo4j, { Driver, Session, Record } from 'neo4j-driver';
+import neo4j, { Driver } from 'neo4j-driver';
+import { GoogleProfile } from 'next-auth/providers/google';
 
 // Use environment variables to get the Neo4j Aura connection details
 const NEO4J_URI = process.env.NEO4J_URI ?? '';

@@ -1,13 +1,6 @@
 import { signUpOrLoginUser } from '@/lib/neo4j';
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-
-// Extend the Profile type to include the `picture` field
-type ExtendedProfile = {
-  name: string;
-  email: string;
-  picture: string;
-};
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google';
 
 const handler = NextAuth({
   providers: [
@@ -25,18 +18,12 @@ const handler = NextAuth({
       return session;
     },
     async signIn({ profile }) {
-      const extendedProfile = profile as ExtendedProfile; // Assert type to include `picture`
+      const gogProfile = profile as GoogleProfile; // Assert type to include `picture`
 
-      if (extendedProfile) {
+      if (gogProfile) {
         try {
-          // Map profile fields to GoogleProfile type
-          const googleProfile: GoogleProfile = {
-            username: extendedProfile.name,
-            email: extendedProfile.email,
-            picture: extendedProfile.picture, // Use the `picture` field
-          };
-
-          const result = await signUpOrLoginUser(googleProfile);
+          const result = await signUpOrLoginUser(gogProfile);
+          console.log(result)
 
           return true; // Allow sign-in
         } catch (error) {
